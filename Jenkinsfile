@@ -37,14 +37,11 @@ pipeline {
                     message "Should we Deploy to Prod?"
                     ok "Authorize"
                 }
-            }
-        }    
-            
-            steps{
-                if (branch == main){
+                steps{
                     echo "This is ${env.BRANCH_NAME}"
                     echo "Deploying Project on Prod Environment..."
                     deploy adapters: [tomcat9(credentialsId: 'tomcatid', path: '', url: 'http://localhost:8082')], contextPath: '/firstWebApplication', war: '**/*.war'
+                    }
                 }
             }
         }
