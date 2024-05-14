@@ -32,9 +32,9 @@ pipeline {
             
         }
         stage("Jenkins Demo - Deploy on Prod"){
-            when {
-                expression{env.BRANCH_NAME == 'main'}
-            }
+            // when {
+            //     expression{env.BRANCH_NAME == 'main'}
+            // }
             input {
                 message "Should we Deploy to Prod?"
                 ok "Authorize"
