@@ -27,7 +27,7 @@ pipeline {
         stage("Jenkins Demo - Deploy on Test"){
             steps{
                 echo "Deploying Project on Test Environment..."
-                deploy adapters: [tomcat9(credentialsId: 'tomcatid', path: '', url: 'http://localhost:8080')], contextPath: '/firstWebApplicationP', war: '**/*.war'              
+                deploy adapters: [tomcat9(credentialsId: 'tomcatid', path: '', url: 'http://localhost:8081')], contextPath: '/firstWebApplicationP', war: '**/*.war'              
             }
             
         }
@@ -39,7 +39,7 @@ pipeline {
             
             steps{
                 echo "Deploying Project on Prod Environment..."
-                deploy adapters: [tomcat9(credentialsId: 'tomcatid', path: '', url: 'http://localhost:8080')], contextPath: '/firstWebApplicationP', war: '**/*.war'
+                deploy adapters: [tomcat9(credentialsId: 'tomcatid', path: '', url: 'http://localhost:8081')], contextPath: '/firstWebApplicationP', war: '**/*.war'
 
             }
         }
