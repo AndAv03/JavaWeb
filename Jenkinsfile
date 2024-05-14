@@ -32,13 +32,13 @@ pipeline {
             
         }
         stage("Jenkins Demo - Deploy on Prod"){
-            // when {
-            //     expression{env.BRANCH_NAME == 'main'}
-            // }
-            input {
-                message "Should we Deploy to Prod?"
-                ok "Authorize"
+            when {
+                expression{env.BRANCH_NAME == 'main'}
             }
+            // input {
+            //     message "Should we Deploy to Prod?"
+            //     ok "Authorize"
+            // }
             steps{
                 echo "This is ${env.BRANCH_NAME}"
                 echo "Deploying Project on Prod Environment..."
