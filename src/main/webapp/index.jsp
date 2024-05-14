@@ -51,7 +51,7 @@
         <p>Hello JSP page.</p>
         <div class="welcome-message-class">
             <% String name = "Sandeep Rongali"; %>
-            Hello, <%= name %>!
+            Hello, <%= name %>! Enjoy Coding
         </div>
     </div>
 </body>
