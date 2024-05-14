@@ -32,16 +32,14 @@ pipeline {
             
         }
         stage("Jenkins Demo - Deploy on Prod"){
-            if (branch == main){
-                input {
-                    message "Should we Deploy to Prod?"
-                    ok "Authorize"
-                }
-                steps{
-                    echo "This is ${env.BRANCH_NAME}"
-                    echo "Deploying Project on Prod Environment..."
-                    deploy adapters: [tomcat9(credentialsId: 'tomcatid', path: '', url: 'http://localhost:8082')], contextPath: '/firstWebApplication', war: '**/*.war'
-                }
+            input {
+                message "Should we Deploy to Prod?"
+                ok "Authorize"
+            }
+            steps{
+                echo "This is ${env.BRANCH_NAME}"
+                echo "Deploying Project on Prod Environment..."
+                deploy adapters: [tomcat9(credentialsId: 'tomcatid', path: '', url: 'http://localhost:8082')], contextPath: '/firstWebApplication', war: '**/*.war'
             }
         }
     }
