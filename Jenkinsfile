@@ -38,6 +38,7 @@ pipeline {
                     ok "Authorize"
                 }
             }
+        }    
             
             steps{
                 if (branch == main){
