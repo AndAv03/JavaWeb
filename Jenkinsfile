@@ -27,20 +27,24 @@ pipeline {
         stage("Jenkins Demo - Deploy on Test"){
             steps{
                 echo "Deploying Project on Test Environment..."
-                deploy adapters: [tomcat9(credentialsId: 'tomcatid', path: '', url: 'http://localhost:8081')], contextPath: '/firstWebApplication', war: '**/*.war'              
+                deploy adapters: [tomcat9(credentialsId: 'tomcatid', path: '', url: 'http://localhost:8082')], contextPath: '/firstWebApplication', war: '**/*.war'              
             }
             
         }
         stage("Jenkins Demo - Deploy on Prod"){
-             input {
-                message "Should we Deploy to Prod?"
-                ok "Authorize"
+            if (env.BRANCH_NAME == 'master'){
+                input {
+                    message "Should we Deploy to Prod?"
+                    ok "Authorize"
+                }
             }
             
             steps{
-                echo "Deploying Project on Prod Environment..."
-                deploy adapters: [tomcat9(credentialsId: 'tomcatid', path: '', url: 'http://localhost:8081')], contextPath: '/firstWebApplication', war: '**/*.war'
-
+                if (env.BRANCH_NAME == 'master'){
+                    echo "This is ${env.BRANCH_NAME}"
+                    echo "Deploying Project on Prod Environment..."
+                    deploy adapters: [tomcat9(credentialsId: 'tomcatid', path: '', url: 'http://localhost:8082')], contextPath: '/firstWebApplication', war: '**/*.war'
+                }
             }
         }
     }
