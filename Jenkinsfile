@@ -25,7 +25,6 @@ pipeline {
             
         }
         stage("Jenkins Demo - Deploy on Test"){
-            when{expression{env.BRANCH_NAME == 'main'}}
             steps{
                 echo "Deploying Project on Test Environment..."
                 deploy adapters: [tomcat9(credentialsId: 'tomcatid', path: '', url: 'http://localhost:8082')], contextPath: '/firstWebApplication', war: '**/*.war'              
@@ -33,6 +32,9 @@ pipeline {
             
         }
         stage("Jenkins Demo - Deploy on Prod"){
+            when {
+                expression{env.BRANCH_NAME == 'main'}
+            }
             input {
                 message "Should we Deploy to Prod?"
                 ok "Authorize"
