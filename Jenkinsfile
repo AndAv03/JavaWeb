@@ -1,60 +1,39 @@
 pipeline {
     agent any
-     tools {
-        maven 'Maven' 
-        }
-    stages {
-        stage("Jenkins Demo - Test"){
-            steps{
-                echo "Testing Maven Project..."
-                sh '''
-                echo "Testing Maven Project..."
-                mvn test
-                '''                
-            }
-            
-        }
-        stage("Jenkins Demo - Build"){
-            steps{
-                echo "Builing Maven Project..."
-                sh '''
-                echo "Builing Maven Project..."
-                mvn package
-                '''                
-            }
-            
-        }
-        stage("Jenkins Demo - Deploy on Test"){
-            steps{
-                echo "Deploying Project on Test Environment..."
-                deploy adapters: [tomcat9(credentialsId: 'tomcatid', path: '', url: 'http://localhost:8082')], contextPath: '/firstWebApplication', war: '**/*.war'              
-            }
-            
-        }
-        stage("Jenkins Demo - Deploy on Prod"){
-            when {
-                expression{env.BRANCH_NAME == 'main'}
-            }
-            // input {
-            //     message "Should we Deploy to Prod?"
-            //     ok "Authorize"
-            // }
-            steps{
-                echo "This is ${env.BRANCH_NAME}"
-                echo "Deploying Project on Prod Environment..."
-                deploy adapters: [tomcat9(credentialsId: 'tomcatid', path: '', url: 'http://localhost:8082')], contextPath: '/firstWebApplication', war: '**/*.war'
-            }
-        }
+
+    tools {
+        maven "MVN_399" // Asegúrate de que este nombre esté definido en Jenkins para Maven 3.9.9
     }
-    post{
-        always{
-            echo "========always========"
+
+    stages {
+        stage('Clonar desde GitHub') {
+            steps {
+                git 'https://github.com/usuario/repositorio-ejemplo.git' // Reemplaza con tu URL real
+            }
         }
-        success{
-            echo "========pipeline executed successfully ========"
+
+        stage('Compilar y Empaquetar') {
+            steps {
+                dir('nombreDelProyecto') { // Reemplaza con el nombre del directorio que crea Git
+                    sh 'mvn clean compile package -B'
+                }
+            }
         }
-        failure{
-            echo "========pipeline execution failed========"
+
+        stage('Desplegar en Tomcat') {
+            steps {
+                dir('nombreDelProyecto') {
+                    deploy adapters: [
+                        tomcat9(
+                            credentialsId: 'tomcatid',
+                            path: '',
+                            url: 'http://localhost:8082'
+                        )
+                    ],
+                    contextPath: 'MiAppDesdeJenkins', // Puedes cambiar esto si quieres otra ruta
+                    war: 'target/*.war'
+                }
+            }
         }
     }
 }
